@@ -6,37 +6,37 @@ pipeline {
         stage('Run Selenium Tests with pytest') {
             steps {
                     echo "Running Selenium Tests using pytest"
-                    bat 'pip install -r requirements.txt'
-                    bat 'start /B python app.py'
-                    bat 'ping 127.0.0.1 -n 5 > nul'
-                    bat 'python -m pytest -v'
+                    sh 'pip install -r requirements.txt'
+                    sh 'start /B python app.py'
+                    sh 'ping 127.0.0.1 -n 5 > nul'
+                    sh 'python -m pytest -v'
             }
         }
 
         stage('Build Docker Image') {
             steps {
                 echo "Build Docker Image"
-                bat "docker build -t seleniumdemoapp:v1 ."
+                sh "docker build -t seleniumdemoapp:v1 ."
             }
         }
         stage('Docker Login') {
             steps {
-                  bat 'docker login -u varshitha256 -p varshitha@L?1010'
+                  sh 'docker login -u varshitha256 -p varshitha@L?1010'
                 }
             }
         stage('push Docker Image to Docker Hub') {
             steps {
                 echo "push Docker Image to Docker Hub"
-                bat "docker tag seleniumdemoapp:v1 varshitha256/mypythonflaskapp:seleniumtestimage"               
+                sh "docker tag seleniumdemoapp:v1 varshitha256/mypythonflaskapp:seleniumtestimage"               
                     
-                bat "docker push varshitha256/mypythonflaskapp:seleniumtestimage"
+                sh "docker push varshitha256/mypythonflaskapp:seleniumtestimage"
                 
             }
         }
         stage('Deploy to Kubernetes') { 
             steps { 
-                    bat 'kubectl apply -f deployment.yaml --validate=false' 
-                    bat 'kubectl apply -f service.yaml' 
+                    sh 'kubectl apply -f deployment.yaml --validate=false' 
+                    sh 'kubectl apply -f service.yaml' 
             } 
         }
     }
