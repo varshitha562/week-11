@@ -16,4 +16,4 @@ spec:
         - name: seleniumtestdemoapp
           image: varshitha256/mypythonflaskapp:seleniumtestimage 
           ports:
-            - containerPort: 5001
+            - containerPort: 5003
